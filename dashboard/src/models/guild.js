@@ -4,17 +4,19 @@ window.Discotron.Guild = class extends window.Discotron.GuildModel {
      * @param {string} discordId Id of the guild
      * @param {string} name Name of the guild
      * @param {string} iconURL Icon of the guild
+     * @param {string} acronym Server acronym, used in case no icon is defined
      * @param {string} commandPrefix Command prefix
      * @param {array} allowedChannelIds Array of channel ids on which the bot is allowed
      * @param {array} enabledPluginIds Array of plugin ids that are enabled
      * @param {array} admins Array of UserRole who have admin priviledge on the bot
      * @param {object} permissions Associative object binding pluginsIds to userRole array
      */
-    constructor(discordId, name, iconURL, commandPrefix, allowedChannelIds, enabledPlugins, admins, permissions) {
+    constructor(discordId, name, iconURL, acronym, commandPrefix, allowedChannelIds, enabledPlugins, admins, permissions) {
         super(discordId, commandPrefix, allowedChannelIds, enabledPlugins, admins, permissions);
 
         this._name = name;
-        this._iconURL = (iconURL === null) ? "/dashboard/images/outage.png" : iconURL;
+        this._iconURL = iconURL;
+        this._acronym = acronym;
 
         // Load as needed
         this._members = []; // ids
@@ -36,6 +38,13 @@ window.Discotron.Guild = class extends window.Discotron.GuildModel {
      */
     get iconURL() {
         return this._iconURL;
+    }
+
+    /**
+     * Get server acronym (used in case no icon is defined).
+     */
+    get acronym() {
+        return this._acronym;
     }
 
     /**
@@ -125,7 +134,7 @@ window.Discotron.Guild = class extends window.Discotron.GuildModel {
                             permissions[pluginId] = new Discotron.Permission(this.discordId, pluginId, usersRoles);
                         }
 
-                        let guild = new Discotron.Guild(obj.id, obj.name, obj.image, obj.prefix, new Set(obj.allowedChannelIds), new Set(obj.enabledPluginIds), new Set(admins), permissions);
+                        let guild = new Discotron.Guild(obj.id, obj.name, obj.image, obj.nameAcronym, obj.prefix, new Set(obj.allowedChannelIds), new Set(obj.enabledPluginIds), new Set(admins), permissions);
                     }
                     resolve(Discotron.Guild._guilds);
                 });
