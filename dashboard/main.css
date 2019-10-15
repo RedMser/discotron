@@ -82,8 +82,6 @@ nav li a:visited {
     color: var(--color-text-dark);
     text-decoration: none;
     padding: 10px;
-    padding-top: 20px;
-    padding-bottom: 20px;
     border-radius: 2px;
     display: inline-block;
     width: 335px;
@@ -117,10 +115,25 @@ main hr {
 }
 
 .server-icon {
-    width: 25px;
-    height: 25px;
+    width: 50px;
+    height: 50px;
     vertical-align: middle;
     margin-right: 20px;
+}
+
+.server-acro {
+    display: inline-block;
+    background-color: var(--color-primary-dark);
+    color: var(--color-text);
+    overflow: hidden;
+    font-size: 125%;
+}
+
+.server-acro:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
 }
 
 .page-header {

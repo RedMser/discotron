@@ -27,20 +27,32 @@ window.Discotron.NavigationController = class {
 	 */
 	static displayServers() {
 		Discotron.Guild.getAll().then((guilds) => {
-			if (Object.keys(guilds).length > 0) {				
+			if (Object.keys(guilds).length > 0) {
 				document.querySelector(".description").style.display = "none";
 
 				let serverLinksContainer = document.querySelector("#nav-links ul");
-				let template = document.getElementById("template-server-link");
 
 				for (let i in guilds) {
 					const guild = guilds[i];
+
+					let template = guild.iconURL === null ?
+						document.getElementById("template-server-acro") :
+						document.getElementById("template-server-link");
 					
-					let serverLink = document.importNode(template.content, true);					
+					let serverLink = document.importNode(template.content, true);
 
 					serverLink.querySelector(".server-link").href += guild.discordId;
-					serverLink.querySelector(".server-icon").src = guild.iconURL;
 					serverLink.querySelector(".server-link").innerHTML += guild.name;
+					serverLink.querySelector(".server-link").title = guild.name;
+					if (guild.iconURL === null) {
+						// Use acronym
+						// todo: measure width of acronym text, and specify inline-styled font-size in pixels of avg character size (so it fits no matter what)
+						//	-> margin on the left = create an empty element before (same as my current ::before) and inline-style its width!
+						serverLink.querySelector(".server-acro").textContent = guild.acronym;
+					} else {
+						// Use image
+						serverLink.querySelector(".server-icon").src = guild.iconURL;
+					}
 					serverLinksContainer.appendChild(serverLink);
 				}
 			}
