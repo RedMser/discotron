@@ -3,26 +3,38 @@ window.discotron.utils = class {
      * Make a HTTP request on the specified URL, with data encoded as json
      * @param {string} verb HTTP verb to send request with
      * @param {string} url Url to make the post request on
-     * @param {object} [body] Data that will be JSON.stringified and sent to the website. Does not work for GET requests.
+     * @param {object} [body] Data that will be JSON.stringified and sent to the website. Will be converted as URL params for GET requests, which will convert everything to string.
+     * @param {object} [appToken] Application token that will be sent in the Authorization header
      * @returns {Promise} resolve(data {object|string}) data: object if could parse JSON, reject()
      */
-    static async query(verb, url, body) {
-        if (verb === "GET" && body !== undefined) {
-            throw new Error("GET cannot have a body.");
+    static async query(verb, url, body, appToken) {
+        const headers = { "Content-Type": "application/json" };
+
+        if (appToken !== undefined) {
+            headers["Authorization"] = `Bearer ${appToken}`;
         }
 
-        const response = await fetch(url, {
+        const request = {
             method: verb,
+            headers: headers,
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json"
-            },
             redirect: "follow",
             referrerPolicy: "no-referrer",
-            body: JSON.stringify(body)
-        });
+        };
+
+        // Get cannot have a body, but we want to easily be able to use an object in the parameters
+        if (verb === "GET") {
+            url += "?" + new URLSearchParams(body).toString();
+            body = undefined; // Unset the body as get cannot have one
+        }
+
+        if (body !== undefined) {
+            request.body = JSON.stringify(body);
+        }
+
+        const response = await fetch(url, request);
         return await response.json();
     }
     static load(url, targetElement, callback) {

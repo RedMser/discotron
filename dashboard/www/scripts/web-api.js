@@ -60,18 +60,18 @@ class WebApi {
         if (verb === "GET") {
             const cachedValue = this._lookupCache(url, data);
             if (cachedValue !== null) {
-                return cachedValue; 
+                return cachedValue;
             }
         }
 
-        // Create the query's body
-        const body = {
-            data: data,
-            appToken: localStorage.appToken
-        };
-
         // Send request to API
-        const response = await discotron.utils.query(verb, `/api${url}`, body);
+        let response;
+        try {
+            response = await discotron.utils.query(verb, `/api${url}`, data, localStorage.appToken);
+        } catch (err) { 
+            throw new discotron.WebApiError("An error occurred when communicating with the server.");
+        }
+
         if (response.error) {
             if (response.source === "core") {
                 switch (response.error.codeName) {
@@ -93,7 +93,7 @@ class WebApi {
             // Server's response
             if (verb === "GET" && response.timeToLive) {
                 // Add to cache
-                this._addToCache(`${url}`, body.data, response);
+                this._addToCache(`${url}`, data, response);
             }
             return response.data;
         }

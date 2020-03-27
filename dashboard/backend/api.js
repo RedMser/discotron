@@ -48,7 +48,7 @@ function createEndpointHandler(endpoint, { mustReturn = false } = {}) {
          * @param {string} [object.source] Check on the client to determine who threw this error on the server side.
          * Can either be *endpoint* if the api endpoint threw it, or *core* if the WebApi threw this error.
          */
-        function reply({data, error, source = "core", status = 200} = {}) {
+        function reply({ data, error, source = "core", status = 200 } = {}) {
             res.status(status).json({
                 data: data,
                 error: error && error.serialize(),
@@ -68,9 +68,21 @@ function createEndpointHandler(endpoint, { mustReturn = false } = {}) {
 
         Logger.log("[WebAPI] Accessing " + req.url);
 
-        // Strip trustedData off the userData
-        const appToken = req.body.appToken;
-        const userData = req.body.data;
+        let appToken;
+        const authorizationHeader = req.header("Authorization");
+        const authorizationPrefix = "Bearer ";
+
+        if (typeof authorizationHeader === "string" && authorizationHeader.startsWith(authorizationPrefix)) {
+            appToken = authorizationHeader.slice(authorizationPrefix.length);
+        }
+
+        let userData = {};
+
+        if (req.method === "GET") {
+            userData = req.query;
+        } else {
+            userData = req.body.data;
+        }
 
         let trustedData = {};
 
@@ -80,7 +92,7 @@ function createEndpointHandler(endpoint, { mustReturn = false } = {}) {
         } catch (err) {
             if (err instanceof WebApiError) {
                 Logger.log("[WebAPI] Insufficient permission to execute " + req.url + " (authentication was set to " + endpoint.authentication + ").", "warn");
-                reply({status: 401, error: err});
+                reply({ status: 401, error: err });
                 return;
             } else {
                 // Unexpected exceptions should be re-thrown
@@ -97,7 +109,7 @@ function createEndpointHandler(endpoint, { mustReturn = false } = {}) {
             reply({ data: returnValue, timeToLive: endpoint.timeToLive });
         } catch (err) {
             if (err instanceof WebApiError) {
-                reply({ status: 400, error: err.serialize(), source: "endpoint" });
+                reply({ status: 400, error: err, source: "endpoint" });
                 return;
             } else {
                 // Unexpected exceptions should be re-thrown
@@ -124,7 +136,7 @@ async function getTrustedData(appToken, untrustedData, authentication) {
     if (authenticationRequirements[authentication].useUserId) {
         // Retrieve from appToken
         const discordUserId = await Login.getDiscordUserId(appToken);
-        
+
         if (!discordUserId) {
             throw new WebApiError("Invalid app token.", "authentication-invalid-app-token");
         }
@@ -160,7 +172,7 @@ async function getTrustedData(appToken, untrustedData, authentication) {
 }
 
 // REMOVE ME LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-module.exports.getWebAPI = () => ({ registerAction: () => {} });
+module.exports.getWebAPI = () => ({ registerAction: () => { } });
 
 module.exports.registerActions = (app) => {
     const sourceDir = __dirname + "/endpoints/";
@@ -168,14 +180,6 @@ module.exports.registerActions = (app) => {
     const files = readRecursive(sourceDir);
 
     // Go through all endpoints and parse the objects
-    app.get("/api/dashboard/test", createEndpointHandler({
-        authentication: "loggedIn",
-        action: (userData, trustedData) => {
-            console.log("lel", userData, trustedData);
-            return { "coolValue": new Date().getTime() };
-        }
-    }, { mustReturn: true }));
-
     const verbOptions = {
         "get": { mustReturn: true },
         "post": {},
