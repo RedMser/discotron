@@ -47,12 +47,12 @@ class Logger {
     }
 
     /**
-     * Log something to the console.
+     * Log something to the console
      * \*\*text** can be used for bold
      * \_\_text__ can be used for underline
      * @static
      * @param {string} severity Severity of the message (can be: err, info, warn, debug)
-     * @param {...any} values Values to display. If it is not a string, it will be displayed on another line.
+     * @param {...any} values Values to display. If it is not a string, it will be displayed on another line
      */
     static log(severity, ...values) {
         const level = severityToLevel[severity];

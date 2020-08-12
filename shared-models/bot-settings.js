@@ -4,7 +4,7 @@
 class BotSettingsModel {
     /**
      * @class
-     * @param {object} options Args.
+     * @param {object} options Args
      * @param {string} [options.helpText=""] Text displayed in the help of the bot
      * @param {boolean} [options.maintenance=false] True to only allow the owner(s) to use the bot
      * @param {string} [options.presenceText=""] Bot presence text

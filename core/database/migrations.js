@@ -2,8 +2,9 @@ const fs = require("fs");
 const db = require("../database/crud.js");
 
 /**
- * Get a full list of available migrations, ordered from oldest to newest version.
- * {@link https://github.com/forwards-long-jump/discotron/wiki/Database-migrations|More info on writing migrations.}
+ * Get a full list of available migrations, ordered from oldest to newest version
+ * 
+ * {@link https://github.com/forwards-long-jump/discotron/wiki/Database-migrations|More info on writing migrations}
  * @returns {Array<string>} List of migrations, formatted like yyyy-mm-dd-name.js
  */
 module.exports.listMigrations = () => {
@@ -13,8 +14,8 @@ module.exports.listMigrations = () => {
 };
 
 /**
- * Gets the latest migration version.
- * @returns {string} Full name of latest migration version.
+ * Gets the latest migration version
+ * @returns {string} Full name of latest migration version
  */
 module.exports.latestMigration = () => {
     const list = this.listMigrations();
@@ -22,8 +23,8 @@ module.exports.latestMigration = () => {
 };
 
 /**
- * Gets the currently applied migration.
- * @returns {Promise<string>} Promise resolving to the current migration's full name.
+ * Gets the currently applied migration
+ * @returns {Promise<string>} Promise resolving to the current migration's full name
  */
 module.exports.current = async () => {
     const tableCountResult = await db.select("sqlite_master", ["count(*)"]);
@@ -43,11 +44,11 @@ module.exports.current = async () => {
 };
 
 /**
- * Gets the differences required to get from one version to another.
- * @param {string|null} oldVersion Full name of old version. If null, "no" version is used (index -1).
- * @param {string|null} newVersion Full name of new version. If null, latest version is used.
+ * Gets the differences required to get from one version to another
+ * @param {string|null} oldVersion Full name of old version. If null, "no" version is used (index -1)
+ * @param {string|null} newVersion Full name of new version. If null, latest version is used
  * @returns {{names: string[], type: string}} List of diff data,
- *  or an object with an empty names list if there is no version change.
+ *  or an object with an empty names list if there is no version change
  */
 module.exports.listDiff = (oldVersion, newVersion) => {
     if (oldVersion === undefined || newVersion === undefined) {

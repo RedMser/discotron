@@ -54,7 +54,7 @@ window.discotron.PluginSettingsWidgetController = class extends window.discotron
     }
 
     /**
-     * Something we won't have the time to implement I call it.
+     * Something we won't have the time to implement I call it
      * Reload stuff from the webAPI and refresh display
      */
     _onRefreshClick() {

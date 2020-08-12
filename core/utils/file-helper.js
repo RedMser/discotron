@@ -26,10 +26,10 @@ module.exports.deleteFolder = function (path) {
 
 // Source: https://gist.github.com/VinGarcia/ba278b9460500dad1f50
 /**
- * Recursively returns all files contained in the specified directory.
- * @param {string} path Path to directory.
- * @param {Array<string>} fileList Currently discovered files list.
- * @returns {Array<string>} List of files in directory tree.
+ * Recursively returns all files contained in the specified directory
+ * @param {string} path Path to directory
+ * @param {Array<string>} fileList Currently discovered files list
+ * @returns {Array<string>} List of files in directory tree
  */
 module.exports.readRecursive = function (path, fileList = []) {
     if (path[path.length - 1] !== "/") {

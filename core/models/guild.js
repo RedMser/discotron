@@ -232,7 +232,7 @@ class Guild extends GuildModel {
      * Set whether the given plugin is enabled on the guild
      * @param {string} pluginId plugin id
      * @param {boolean} enabled enabled
-     * @returns {Promise} Promise resolves once plugin fully enabled (database operation completed).
+     * @returns {Promise} Promise resolves once plugin fully enabled (database operation completed)
      */
     setPluginEnabled(pluginId, enabled) {
         if (this._enabledPlugins.size === 0) {
@@ -271,7 +271,7 @@ class Guild extends GuildModel {
      * Set the set of users and roles allowed to use the given plugin
      * @param {string} pluginId plugin id
      * @param {Array} userRoles Array of UserRole
-     * @returns {Promise} Promise resolves once plugin permissions fully set (database operation completed).
+     * @returns {Promise} Promise resolves once plugin permissions fully set (database operation completed)
      */
     setPluginPermission(pluginId, userRoles) {
         this._permissions[pluginId]._usersRoles = userRoles;
@@ -327,7 +327,7 @@ class Guild extends GuildModel {
     /**
      * Load plugin permissions from database
      * @param {string} pluginId plugin id
-     * @returns {Promise} Promise resolves once plugin permissions are loaded (database operation completed).
+     * @returns {Promise} Promise resolves once plugin permissions are loaded (database operation completed)
      */
     _loadPluginPermission(pluginId) {
         this._permissions[pluginId] = new Permission({discordGuildId: this.discordId, pluginId: pluginId, userRoles: []});
@@ -351,7 +351,7 @@ class Guild extends GuildModel {
 
     /**
      * Load plugins enabled on this guild from database
-     * @returns {Promise} Promise resolves once plugin enabled list is loaded (database operation completed).
+     * @returns {Promise} Promise resolves once plugin enabled list is loaded (database operation completed)
      */
     _loadEnabledPlugins() {
         return db.select("GuildEnabledPlugins", ["pluginId"], {
@@ -365,7 +365,7 @@ class Guild extends GuildModel {
 
     /**
      * Load allowed channels from database
-     * @returns {Promise} Promise resolves once list of allowed channels is loaded (database operation completed).
+     * @returns {Promise} Promise resolves once list of allowed channels is loaded (database operation completed)
      */
     _loadAllowedChannels() {
         return db.select("AllowedChannels", ["discordChannelId"], {
@@ -379,7 +379,7 @@ class Guild extends GuildModel {
 
     /**
      * Load guild settings from database
-     * @returns {Promise} Promise resolves once guild settings are loaded (database operation completed).
+     * @returns {Promise} Promise resolves once guild settings are loaded (database operation completed)
      */
     _loadGuildSettings() {
         return db.select("GuildSettings", ["prefix"], {
@@ -395,7 +395,7 @@ class Guild extends GuildModel {
 
     /**
      * Loads admins from db, inserts default values if none found
-     * @returns {Promise} Promise resolves once admin list is loaded (database operation completed).
+     * @returns {Promise} Promise resolves once admin list is loaded (database operation completed)
      */
     _loadAdminsFromDatabase() {
         // TODO: Fix n + 1 query here
@@ -414,7 +414,7 @@ class Guild extends GuildModel {
 
     /**
      * Removes the guild from the database
-     * @returns {Promise} Promise resolves once database operation completed.
+     * @returns {Promise} Promise resolves once database operation completed
      */
     delete() {
         return db.delete("Guilds", {
@@ -425,8 +425,8 @@ class Guild extends GuildModel {
     }
 
     /**
-     * Called when guild is first discovered by Discotron and added to the database.
-     * @returns {Promise} Promise resolves once database operation completed.
+     * Called when guild is first discovered by Discotron and added to the database
+     * @returns {Promise} Promise resolves once database operation completed
      */
     _tryAdd() {
         return db.select("Guilds", ["discordGuildId"], {

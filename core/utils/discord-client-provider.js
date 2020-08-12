@@ -28,7 +28,7 @@ class DiscordClientProvider {
     }
 
     /**
-     * Retrieve the current DiscordClient object.
+     * Retrieve the current DiscordClient object
      * Do not keep a "global" reference to the object as it would bypass online checks
      * 
      * @param {object} [param={}] Param object

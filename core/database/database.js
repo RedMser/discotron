@@ -28,7 +28,7 @@ module.exports.deleteDatabase = () => {
 };
 
 /**
- * Open sqlite database from its file. If it does not exist, it will be created.
+ * Open sqlite database from its file. If it does not exist, it will be created
  */
 module.exports.openDatabase = () => {
     database = new sqlite.Database(databasePath, sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE, (err) => {
@@ -46,10 +46,11 @@ module.exports.getDatabase = () => {
 };
 
 /**
- * Run all database migrations so that we reach the requested version.
- * {@link https://github.com/forwards-long-jump/discotron/wiki/Database-migrations|More info on writing migrations.}
- * @param {string|null} version Which version to migrate to. If null, the latest version is chosen.
- * @param {boolean} allowDown If true, allow downgrading database version. Otherwise (default), we throw an error.
+ * Run all database migrations so that we reach the requested version
+ * 
+ * {@link https://github.com/forwards-long-jump/discotron/wiki/Database-migrations|More info on writing migrations}
+ * @param {string|null} version Which version to migrate to. If null, the latest version is chosen
+ * @param {boolean} allowDown If true, allow downgrading database version. Otherwise (default), we throw an error
  */
 module.exports.doDatabaseMigrations = async (version = null, allowDown = false) => {
     // While listDiff already handles this similarly, we need a valid "version" string for the SQL as well

@@ -16,7 +16,7 @@ class Command extends CommandModel {
      * @param {Function} [settings.action = () => {}] Action to trigger when the command is called. Receives args, discordMessage as parameters
      * @param {boolean} [settings.ownersOnly = false] True to only allow the owner(s) to use the command
      * @param {boolean} [settings.requiresMention = false] Set to true if the bot must be mentioned for that
-     * @param {boolean} [settings.bypassSpamDetection = false] Set to true to not penalize the user for spamming the command.
+     * @param {boolean} [settings.bypassSpamDetection = false] Set to true to not penalize the user for spamming the command
      * @param {string} [settings.scope = "everywhere"] Scope where the command can be triggered, can be "everywhere|pm|guild"
      */
     constructor(settings) {

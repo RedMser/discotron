@@ -3,7 +3,7 @@ const db = require("./../database/crud.js");
 const Logger = require("../utils/logger.js");
 const discordClientProvider = require("./../utils/discord-client-provider.js");
 /**
- * UserRole represents either a User or a Role, depending on which column is specified in the database.
+ * UserRole represents either a User or a Role, depending on which column is specified in the database
  */
 class UserRole extends UserRoleModel {
     /**

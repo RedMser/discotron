@@ -105,8 +105,8 @@ async function init() {
     }
 
     /**
-     * Handle command-line arguments passed to the executable.
-     * @param {object} args Parsed arguments as an object.
+     * Handle command-line arguments passed to the executable
+     * @param {object} args Parsed arguments as an object
      */
     function handleArgs(args) {
         // Path where all configs are stored
